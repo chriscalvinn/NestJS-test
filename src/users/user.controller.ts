@@ -11,6 +11,13 @@ export class userController{
         return await this.userService.registerUser(body.username, body.user);
     }
 
+    /*
+    @Get()
+    getAllUser(){
+        return this.userService.getAllUser();
+    }
+    */
+
     @Get()
     getAllfromdbase(){
         return this.userService.findAll();
