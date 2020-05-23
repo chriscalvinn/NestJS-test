@@ -8,5 +8,6 @@ import { clientdata } from "./entity/user.entity";
     imports: [ TypeOrmModule.forFeature([clientdata])],
     controllers: [userController],
     providers: [userService],
+    exports: [userService],
 })
 export class userModule{}
