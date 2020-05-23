@@ -14,16 +14,6 @@ export class userService{
     ) {}
     private users: userModel[] = [];
 /*
-    newUser(userID: number, user: string): userModel{
-        const testuser = new userModel(userID, user);
-        this.users.push(testuser);
-        return testuser;
-    }
-
-    getAllUser(){
-        return this.users.slice();
-    }
-
     getUserById(id: number){
         const userlist = this.users.find(oneUser => oneUser.userID == id);
         if (!userlist){
@@ -46,18 +36,17 @@ export class userService{
         
     }
 */
-    async registerUser(uname: string, password: string): Promise<clientdata>{
+async registerUser(uname: string, password: string): Promise<any>{
     // asumsi tidak ada data user diupload 2 kali
         const data = uname+password;
         let newUser = new clientdata();
         
         let existing = await this.findByUname(uname);
-        console.log(existing);
-        if (!existing==null){
-            console.log('user exsisted. name: '+existing.username)
-            return existing;
+        if (existing){
+            console.log('user exsisted. name: '+existing.username);
+            return ({'status code': 501,'message': 'Not Implemented. user exsisted.'});
         } else {
-            console.log('lanjutkan')
+            console.log('valid')
         }
 
         newUser.username = await this.hashData(uname);
@@ -87,15 +76,13 @@ export class userService{
         const val = await this.findAll();
         let existing = new clientdata();
         existing = null;
-        val.forEach(user => {
-            bcrypt.compare(uname, user.username).then(function(result){
-                if (result){
-                    existing = user;
-                    return;
-                }
-            })
-        });
-        console.log(existing);
+        for (let user of val){
+            const match = await bcrypt.compare(uname, user.username);
+            if (match){
+                existing = user;
+                break;
+            }
+        };
         return existing;
     }
 
