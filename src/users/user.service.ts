@@ -42,6 +42,7 @@ async registerUser(uname: string, password: string): Promise<any>{
         let newUser = new clientdata();
         
         let existing = await this.findByUname(uname);
+        console.log(existing);
         if (existing){
             console.log('user exsisted. name: '+existing.username);
             return ({'status code': 501,'message': 'Not Implemented. user exsisted.'});
